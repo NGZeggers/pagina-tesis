@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente Inteligente Soberano para Soporte Técnico - Propuesta de Tesis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .objective-card {
+            transition: all 0.3s ease;
+        }
+        .objective-card:hover {
+            transform: translateX(10px);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 sticky-nav shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-gray-800">Propuesta de Tesis IA</div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#planteamiento" class="text-gray-600 hover:text-orange-600 transition-colors">Planteamiento</a>
+                <a href="#desafio" class="text-gray-600 hover:text-orange-600 transition-colors">El Desafío</a>
+                <a href="#proposito" class="text-gray-600 hover:text-orange-600 transition-colors">Propósito</a>
+                <a href="#objetivos" class="text-gray-600 hover:text-orange-600 transition-colors">Objetivos</a>
+                <a href="#arquitectura" class="text-gray-600 hover:text-orange-600 transition-colors">Arquitectura</a>
+                <a href="#evaluacion" class="text-gray-600 hover:text-orange-600 transition-colors">Evaluación</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-gray-800 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
+            <a href="#planteamiento" class="block text-gray-600 hover:text-orange-600">Planteamiento</a>
+            <a href="#desafio" class="block text-gray-600 hover:text-orange-600">El Desafío</a>
+            <a href="#proposito" class="block text-gray-600 hover:text-orange-600">Propósito</a>
+            <a href="#objetivos" class="block text-gray-600 hover:text-orange-600">Objetivos</a>
+            <a href="#arquitectura" class="block text-gray-600 hover:text-orange-600">Arquitectura</a>
+            <a href="#evaluacion" class="block text-gray-600 hover:text-orange-600">Evaluación</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="hero" class="text-center mb-24">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Asistente Inteligente Soberano para Soporte Técnico</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-4">Un enfoque basado en RAG Federado y Adaptación de Voz Multiestilo para el español</p>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 max-w-2xl mx-auto">
+                <p class="text-sm text-blue-900"><strong>Propuesta de investigación doctoral</strong> adaptable para múltiples enfoques de tesis en el área de IA conversacional</p>
+            </div>
+        </section>
+
+        <!-- Nueva sección: Planteamiento del Problema -->
+        <section id="planteamiento" class="mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Planteamiento del Problema</h2>
+            <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold mb-4 text-gray-800">La Transformación Digital del Soporte Técnico y la Brecha Lingüístico-Cultural</h3>
+                <p class="text-gray-600 mb-4">
+                    La inteligencia artificial conversacional ha emergido como una fuerza transformadora en el servicio al cliente, redefiniendo las interacciones a escala global. Grandes proveedores como Microsoft, Google y AWS han desplegado asistentes avanzados que aprovechan modelos de lenguaje de gran escala (LLM) para ofrecer conversaciones fluidas.
+                </p>
+                <div class="grid md:grid-cols-2 gap-4 my-6">
+                    <div class="bg-orange-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-orange-800 mb-2">Contexto en América Latina</h4>
+                        <p class="text-sm text-gray-700">Casos de éxito en México, Chile, Brasil y Colombia demuestran que la IA genera valor medible, con reducción de tiempos de respuesta en más del 90% en procesos de crédito.</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-blue-800 mb-2">El Problema Central</h4>
+                        <p class="text-sm text-gray-700">Los modelos de IA genéricos fallan en comprender la pragmática y cultura del español, creando una ilusión de competencia lingüística que se desmorona en el uso cotidiano.</p>
+                    </div>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg mt-6">
+                    <h4 class="font-bold text-gray-800 mb-3">Datos Clave del Problema</h4>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-orange-500 mr-2">▸</span>
+                            <span><strong>40%</strong> de las organizaciones considera la protección de datos como obstáculo principal para adoptar IA</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-orange-500 mr-2">▸</span>
+                            <span><strong>80%</strong> de los directivos ven la fuga de datos confidenciales como su principal preocupación</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-orange-500 mr-2">▸</span>
+                            <span><strong>30%</strong> de los clientes abandonan una marca tras una sola mala experiencia de soporte</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="desafio" class="mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">El Desafío: Tres Barreras Críticas</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-16">Las soluciones de IA actuales para soporte técnico enfrentan obstáculos fundamentales que limitan su adopción y eficacia en el mercado hispanohablante, especialmente en sectores regulados como finanzas, salud y administración pública.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <div class="text-3xl text-orange-500 mb-4">🗣️</div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Brecha Lingüístico-Cultural</h3>
+                    <p class="text-gray-600 mb-3">Los modelos genéricos no comprenden los regionalismos, la jerga y el contexto emocional del español.</p>
+                    <div class="bg-gray-50 p-3 rounded text-sm text-gray-700">
+                        <strong>Ejemplo:</strong> No distinguen "plata" (dinero) de "plata" (metal) en contexto financiero
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <div class="text-3xl text-orange-500 mb-4">🔒</div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Soberanía de Datos</h3>
+                    <p class="text-gray-600 mb-3">Las empresas se resisten a enviar datos confidenciales a la nube por riesgos de seguridad y cumplimiento normativo.</p>
+                    <div class="bg-gray-50 p-3 rounded text-sm text-gray-700">
+                        <strong>Impacto:</strong> GDPR y leyes locales exigen residencia de datos específica
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <div class="text-3xl text-orange-500 mb-4">🤖</div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Voz Robótica y Poco Fiable</h3>
+                    <p class="text-gray-600 mb-3">Los sistemas actuales suenan monótonos y fallan al transcribir acentos o ruido de fondo.</p>
+                    <div class="bg-gray-50 p-3 rounded text-sm text-gray-700">
+                        <strong>Resultado:</strong> Experiencia en el "valle inquietante" de la IA
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nueva sección: Propósito y Justificación -->
+        <section id="proposito" class="mb-24 bg-orange-50 py-20 rounded-lg scroll-mt-20">
+            <div class="container mx-auto px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Propósito y Justificación (¿Para qué?)</h2>
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-white p-8 rounded-lg shadow-lg mb-8">
+                        <h3 class="text-xl font-bold mb-4 text-orange-600">Propósito del Proyecto</h3>
+                        <p class="text-gray-700 mb-4">
+                            Diseñar y prototipar una nueva clase de asistente de IA para soporte técnico que sea <strong>soberano, seguro y culturalmente resonante</strong> para los usuarios de habla hispana. Este proyecto busca eliminar el compromiso actual entre adoptar sistemas potentes pero inseguros en la nube, o depender de sistemas locales menos capaces y costosos.
+                        </p>
+                        <p class="text-gray-700">
+                            La arquitectura propuesta es simultáneamente avanzada en tecnología y respetuosa de la privacidad de los datos y la identidad cultural.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 text-orange-600">Justificación</h3>
+                        <p class="text-gray-700 mb-4">
+                            Esta investigación tiene el potencial de <strong>desbloquear la adopción de IA de alto valor</strong> en industrias y regiones que hasta ahora han sido cautelosas por razones válidas de seguridad y eficacia.
+                        </p>
+                        <div class="grid md:grid-cols-2 gap-4 mt-6">
+                            <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                                <h4 selection="font-bold text-green-800 mb-2">Impacto Técnico</h4>
+                                <p class="text-sm text-gray-700">Modelo viable para el desarrollo de asistentes de IA confiables en sectores regulados de América Latina</p>
+                            </div>
+                            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                                <h4 class="font-bold text-blue-800 mb-2">Impacto Social</h4>
+                                <p class="text-sm text-gray-700">Facilitador de confianza digital, permitiendo aprovechar la IA sin sacrificar el control sobre los datos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container mt-12">
+                    <canvas id="architectureChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nueva sección: Objetivos -->
+        <section id="objetivos" class="mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Objetivos del Proyecto</h2>
+            
+            <div class="max-w-4xl mx-auto mb-12">
+                <div class="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-8 rounded-lg shadow-xl">
+                    <h3 class="text-2xl font-bold mb-4">Objetivo General</h3>
+                    <p class="text-lg">
+                        Diseñar, desarrollar y evaluar un prototipo de asistente de IA soberano para soporte técnico en español que integre una arquitectura de recuperación de conocimiento federada y con preservación de la privacidad, junto con capacidades de interacción por voz altamente adaptadas a un dialecto específico.
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold mb-8 text-gray-800">Objetivos Específicos</h3>
+                <div class="space-y-6">
+                    <div class="objective-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-orange-500">
+                        <div class="flex items-start">
+                            <div class="bg-orange-500 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0 font-bold text-lg">1</div>
+                            <div class="ml-4 flex-1">
+                                <h4 class="font-bold text-gray-800 mb-2">Arquitectar un Sistema RAG Seguro y Federado</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Definir una arquitectura de Generación Aumentada por Recuperación (RAG) que opere sobre fuentes de datos distribuidas sin requerir su centralización. Incluye diseño de mecanismo de consulta con preservación de privacidad y control de acceso dinámico ("security trimming").
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="objective-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-blue-500">
+                        <div class="flex items-start">
+                            <div class="bg-blue-500 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0 font-bold text-lg">2</div>
+                            <div class="ml-4 flex-1">
+                                <h4 class="font-bold text-gray-800 mb-2">Desarrollar un Módulo ASR de Alta Fidelidad</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Adaptar un modelo de Reconocimiento Automático de Voz pre-entrenado (Whisper, SeamlessM4T) para español de México mediante técnicas PEFT, minimizando la Tasa de Error de Palabra (WER) y Carácter (CER).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="objective-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-purple-500">
+                        <div class="flex items-start">
+                            <div class="bg-purple-500 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0 font-bold text-lg">3</div>
+                            <div class="ml-4 flex-1">
+                                <h4 class="font-bold text-gray-800 mb-2">Implementar un Módulo TTS Expresivo y Emocional</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Desarrollar un motor de Síntesis de Voz capaz de generar respuestas con prosodia y emoción contextualmente apropiadas usando modelos avanzados (F5-TTS, VALL-E) y técnicas de control de estilo.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="objective-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-green-500">
+                        <div class="flex items-start">
+                            <div class="bg-green-500 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0 font-bold text-lg">4</div>
+                            <div class="ml-4 flex-1">
+                                <h4 class="font-bold text-gray-800 mb-2">Integrar los Componentes en un Pipeline Conversacional</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Ensamblar los módulos de RAG Federado, ASR y TTS en un pipeline funcional de extremo a extremo que procese consultas de voz, recupere información segura y genere respuestas coherentes y naturales.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="objective-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-red-500">
+                        <div class="flex items-start">
+                            <div class="bg-red-500 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0 font-bold text-lg">5</div>
+                            <div class="ml-4 flex-1">
+                                <h4 class="font-bold text-gray-800 mb-2">Evaluar Rigurosamente el Prototipo</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Realizar evaluación exhaustiva con protocolo mixto: métricas objetivas (WER/CER, F0-RMSE), subjetivas (MOS) y evaluación de tarea para medir la efectividad del sistema completo.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="arquitectura" class="mb-24 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Arquitectura y Tecnología Clave</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-16">Nuestra solución se basa en dos pilares tecnológicos innovadores que funcionan en conjunto: un sistema de acceso a datos que respeta la privacidad y un módulo de voz que entiende y habla con naturalidad.</p>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">1. RAG Federado con Control de Acceso</h3>
+                    <p class="text-gray-600 mb-6">Esta arquitectura permite que la IA consulte bases de conocimiento distribuidas (en diferentes departamentos o países) <strong>sin mover los datos de su lugar de origen</strong>. Un orquestador central gestiona las consultas, garantizando que los datos sensibles nunca salgan de la red local.</p>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-start p-3 bg-gray-50 rounded-md transition-all hover:bg-orange-100">
+                            <div class="flex-shrink-0 bg-orange-500 text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold">1</div>
+                            <p><strong class="text-gray-700">Consulta de Usuario:</strong> El usuario realiza una pregunta por voz.</p>
+                        </div>
+                        <div class="flex items-start p-3 bg-gray-50 rounded-md transition-all hover:bg-orange-100">
+                            <div class="flex-shrink-0 bg-orange-500 text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold">2</div>
+                            <p><strong class="text-gray-700">Enrutamiento Seguro:</strong> El orquestador aplica filtros de seguridad basados en la identidad del usuario.</p>
+                        </div>
+                        <div class="flex items-start p-3 bg-gray-50 rounded-md transition-all hover:bg-orange-100">
+                            <div class="flex-shrink-0 bg-orange-500 text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold">3</div>
+                            <p><strong class="text-gray-700">Búsqueda Local:</strong> Cada nodo busca en su base privada y devuelve solo información permitida.</p>
+                        </div>
+                        <div class="flex items-start p-3 bg-gray-50 rounded-md transition-all hover:bg-orange-100">
+                            <div class="flex-shrink-0 bg-orange-500 text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold">4</div>
+                            <p><strong class="text-gray-700">Respuesta Aumentada:</strong> El LLM genera una respuesta precisa citando las fuentes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">2. Módulo de Voz Adaptado y Expresivo</h3>
+                    <p class="text-gray-600 mb-6">Utilizamos técnicas de <em>fine-tuning</em> para adaptar modelos de voz de última generación a un dialecto específico del español, mejorando la precisión del reconocimiento (ASR) y generando respuestas (TTS) con entonación adecuada.</p>
+                    <div class="space-y-4">
+                         <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="font-bold text-gray-700">Entrada de Voz del Usuario 🎤</p>
+                        </div>
+                        <div class="text-center text-gray-400">↓</div>
+                        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
+                            <h4 class="font-bold text-blue-800">ASR de Alta Fidelidad</h4>
+                            <p class="text-sm text-blue-700">Modelo afinado con PEFT para transcribir con precisión habla coloquial y acentos.</p>
+                        </div>
+                        <div class="text-center text-gray-400">↓</div>
+                        <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-lg">
+                            <h4 class="font-bold text-green-800">LLM + RAG Federado</h4>
+                            <p class="text-sm text-green-700">Procesa el texto, recupera información segura y determina el tono emocional.</p>
+                        </div>
+                        <div class="text-center text-gray-400">↓</div>
+                        <div class="bg-purple-50 border-l-4 border-purple-400 p-4 rounded-lg">
+                            <h4 class="font-bold text-purple-800">TTS Expresivo y Emocional</h4>
+                            <p class="text-sm text-purple-700">Genera voz con prosodia natural y entonación controlada según el contexto.</p>
+                        </div>
+                        <div class="text-center text-gray-400">↓</div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="font-bold text-gray-700">Respuesta de Voz del Asistente 🔊</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="evaluacion" class="scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Validación y Métricas de Éxito</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-16">El éxito del proyecto se medirá con un protocolo de evaluación riguroso que combina métricas objetivas y subjetivas para validar cada componente y el sistema en su conjunto. Haz clic en cada métrica para saber más.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="metric-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">WER / CER</h3>
+                    <p class="text-gray-500 font-medium">Módulo: ASR</p>
+                    <div class="metric-details hidden mt-4 text-gray-600">
+                        <p><strong>Definición:</strong> Tasa de Error de Palabra/Carácter. Mide la precisión de la transcripción. El objetivo es minimizar este valor para el dialecto específico.</p>
+                        <p class="mt-2 text-sm"><strong>Fórmula:</strong> WER = (S+D+I)/N donde S=Sustituciones, D=Eliminaciones, I=Inserciones, N=Palabras en referencia</p>
+                    </div>
+                </div>
+                <div class="metric-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">MOS</h3>
+                    <p class="text-gray-500 font-medium">Módulo: TTS</p>
+                    <div class="metric-details hidden mt-4 text-gray-600">
+                        <p><strong>Definición:</strong> Puntuación de Opinión Media. Evaluadores humanos califican la naturalidad, claridad y adecuación emocional de la voz generada en una escala de 1 a 5.</p>
+                    </div>
+                </div>
+                <div class="metric-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">F0-RMSE</h3>
+                    <p class="text-gray-500 font-medium">Módulo: TTS</p>
+                    <div class="metric-details hidden mt-4 text-gray-600">
+                        <p><strong>Definición:</strong> Raíz del Error Cuadrático Medio de F0. Mide objetivamente qué tan cerca está la entonación (melodía) de la voz sintética de una grabación humana de referencia.</p>
+                    </div>
+                </div>
+                <div class="metric-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Tasa de Denegación de Acceso</h3>
+                    <p class="text-gray-500 font-medium">Módulo: RAG (Seguridad)</p>
+                    <div class="metric-details hidden mt-4 text-gray-600">
+                        <p><strong>Definición:</strong> Porcentaje de intentos de acceso a información no autorizada que son bloqueados correctamente. El objetivo es un 100% para validar la seguridad.</p>
+                    </div>
+                </div>
+                <div class="metric-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Tasa de Éxito de Tarea</h3>
+                    <p class="text-gray-500 font-medium">Sistema Completo</p>
+                    <div class="metric-details hidden mt-4 text-gray-600">
+                        <p><strong>Definición:</strong> Porcentaje de problemas de soporte técnico simulados que el asistente resuelve de forma correcta y autónoma, midiendo su utilidad práctica.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-24">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2024 Propuesta de Tesis: Asistente Inteligente Soberano. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.querySelectorAll('nav a, #mobile-menu a');
+
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = e.currentTarget.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    if (mobileMenu.classList.contains('hidden') === false) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            const ctx = document.getElementById('architectureChart').getContext('2d');
+            const architectureChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Cloud API (Ej. OpenAI)', 'On-Premise (Local)', 'RAG Federado (Propuesta)'],
+                    datasets: [{
+                        label: 'Análisis de Arquitectura',
+                        data: [33.3, 33.3, 33.4],
+                        backgroundColor: [
+                            '#FBBF24',
+                            '#F87171',
+                            '#34D399'
+                        ],
+                        borderColor: '#FDFBF8',
+                        borderWidth: 4,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                color: '#4A4A4A',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: '#4A4A4A',
+                            titleFont: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 12
+                            },
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    if (label === 'Cloud API (Ej. OpenAI)') {
+                                        return ['Costo: Bajo inicial, alto a escala', 'Soberanía: Baja', 'Escalabilidad: Muy Alta'];
+                                    }
+                                    if (label === 'On-Premise (Local)') {
+                                        return ['Costo: Muy Alto inicial', 'Soberanía: Total', 'Escalabilidad: Baja'];
+                                    }
+                                    if (label === 'RAG Federado (Propuesta)') {
+                                        return ['Costo: Medio y controlado', 'Soberanía: Alta', 'Escalabilidad: Media (por nodo)'];
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const metricCards = document.querySelectorAll('.metric-card');
+            metricCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const details = card.querySelector('.metric-details');
+                    details.classList.toggle('hidden');
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
