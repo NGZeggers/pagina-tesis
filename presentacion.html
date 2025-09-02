@@ -96,10 +96,49 @@
       background-color: #334155 !important; /* slate-700 */
       color: #ffffff !important;
     }
+    
+    /* Botón flotante "Salir" */
+    .exit-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background-color: #1e293b !important; /* slate-800 */
+      color: #ffffff !important;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-decoration: none !important;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.2s ease;
+      opacity: 0.9;
+    }
+    .exit-button:hover {
+      background-color: #334155 !important; /* slate-700 */
+      color: #ffffff !important;
+      opacity: 1;
+    }
+    
+    /* Ocultar en la última slide */
+    .slides section:last-child .exit-button {
+      display: none !important;
+    }
   </style>
 </head>
 
 <body>
+<!-- Botón flotante "Salir" -->
+<a href="index.html" class="exit-button">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5"></path>
+    <path d="M12 19l-7-7 7-7"></path>
+  </svg>
+  Salir
+</a>
+
 <div class="reveal">
   <div class="slides">
 
@@ -290,7 +329,7 @@
       <p>David Medina Castellanos</p>
       <p class="text-sm text-slate-500">Tesis de Maestría — Maestría en Ingeniería y Ciencia de Datos</p>
       <div class="mt-6">
-        <a href="index.html" class="nav-button px-6 py-3 rounded-lg transition-colors duration-200 font-medium text-lg">Regresar a Home</a>
+        <a href="index.html" class="nav-button px-6 py-3 rounded-lg transition-colors duration-200 font-medium text-lg">Salir</a>
       </div>
     </section>
 
@@ -311,6 +350,30 @@
     slideNumber: 'c/t',
     transition: 'slide',
     plugins: [ RevealNotes, RevealZoom ]
+  });
+
+  // Controlar visibilidad del botón "Salir"
+  Reveal.on('slidechanged', event => {
+    const exitButton = document.querySelector('.exit-button');
+    const totalSlides = Reveal.getTotalSlides();
+    const currentSlide = event.indexh + 1;
+    
+    if (currentSlide === totalSlides) {
+      exitButton.style.display = 'none';
+    } else {
+      exitButton.style.display = 'flex';
+    }
+  });
+
+  // Ocultar en la slide inicial si es la última
+  window.addEventListener('DOMContentLoaded', () => {
+    const exitButton = document.querySelector('.exit-button');
+    const totalSlides = Reveal.getTotalSlides();
+    const currentSlide = Reveal.getState().indexh + 1;
+    
+    if (currentSlide === totalSlides) {
+      exitButton.style.display = 'none';
+    }
   });
 
   // Gráfica (tamaño fijo para impresión)
