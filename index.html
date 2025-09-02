@@ -1,507 +1,384 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistente Inteligente Soberano para Soporte Técnico - Propuesta de Tesis</title>
+    <title>Tesis de Maestría — Optimizando un LLM con Reconocimiento de Voz para Pre-Consulta Médica y Agilización de la Atención al Paciente | Maestría en Ingeniería y Ciencia de Datos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Paleta: beige claro, texto azul grisáceo, acentos slate/indigo/teal -->
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #FDFBF8;
-            color: #4A4A4A;
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 450px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 400px;
-        }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
-            }
-        }
-        .sticky-nav {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        .objective-card {
-            transition: all 0.3s ease;
-        }
-        .objective-card:hover {
-            transform: translateX(10px);
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f5f3f0; color: #334155; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .nav-link { transition: color 0.3s, border-bottom-color 0.3s; }
+        .nav-link:hover, .nav-link.active { color: #435a7d; border-bottom-color: #435a7d; }
+        .architecture-node { transition: all 0.3s; cursor: pointer; }
+        .architecture-node:hover, .architecture-node.active { transform: scale(1.05); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); border-color: #60a5fa; }
+        .badge { display: inline-flex; align-items: center; gap: .4rem; font-size: .75rem; border-radius: 9999px; padding: .25rem .6rem; background: #eef2ff; color: #3730a3; border: 1px solid #c7d2fe; }
+        .callout { background: #fff; border-left: 4px solid #14b8a6; }
+        code { background: #f1f5f9; padding: .1rem .35rem; border-radius: .25rem; }
     </style>
 </head>
 <body class="antialiased">
-
-    <header id="header" class="bg-white/80 sticky-nav shadow-md">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-xl font-bold text-gray-800">Propuesta de Tesis IA</div>
-            <div class="hidden md:flex space-x-6">
-                <a href="#planteamiento" class="text-gray-600 hover:text-orange-600 transition-colors">Planteamiento</a>
-                <a href="#desafio" class="text-gray-600 hover:text-orange-600 transition-colors">El Desafío</a>
-                <a href="#proposito" class="text-gray-600 hover:text-orange-600 transition-colors">Propósito</a>
-                <a href="#objetivos" class="text-gray-600 hover:text-orange-600 transition-colors">Objetivos</a>
-                <a href="#arquitectura" class="text-gray-600 hover:text-orange-600 transition-colors">Arquitectura</a>
-                <a href="#evaluacion" class="text-gray-600 hover:text-orange-600 transition-colors">Evaluación</a>
-            </div>
-            <div class="md:hidden">
-                <button id="menu-btn" class="text-gray-800 focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <ul class="flex justify-center space-x-4 sm:space-x-8 text-sm sm:text-base font-medium text-slate-600">
+                <li><a href="#vision" class="nav-link py-2 border-b-2 border-transparent">Visión</a></li>
+                <li><a href="#problema" class="nav-link py-2 border-b-2 border-transparent">Problema</a></li>
+                <li><a href="#solucion" class="nav-link py-2 border-b-2 border-transparent">Solución</a></li>
+                <li><a href="#objetivos" class="nav-link py-2 border-b-2 border-transparent">Objetivos</a></li>
+                <li><a href="#diferenciacion" class="nav-link py-2 border-b-2 border-transparent">Diferenciación</a></li>
+                <li><a href="#arquitectura" class="nav-link py-2 border-b-2 border-transparent">Arquitectura</a></li>
+                <li><a href="#componentes" class="nav-link py-2 border-b-2 border-transparent">Componentes</a></li>
+                <li><a href="#mvp" class="nav-link py-2 border-b-2 border-transparent">MVP</a></li>
+            </ul>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
-            <a href="#planteamiento" class="block text-gray-600 hover:text-orange-600">Planteamiento</a>
-            <a href="#desafio" class="block text-gray-600 hover:text-orange-600">El Desafío</a>
-            <a href="#proposito" class="block text-gray-600 hover:text-orange-600">Propósito</a>
-            <a href="#objetivos" class="block text-gray-600 hover:text-orange-600">Objetivos</a>
-            <a href="#arquitectura" class="block text-gray-600 hover:text-orange-600">Arquitectura</a>
-            <a href="#evaluacion" class="block text-gray-600 hover:text-orange-600">Evaluación</a>
-        </div>
     </header>
 
     <main class="container mx-auto px-6 py-12">
+        <!-- VISIÓN -->
+        <section id="vision" class="min-h-screen flex flex-col justify-center items-center text-center">
+  <h1 class="text-3xl md:text-5xl font-bold text-slate-800">
+    Tesis de Maestría: Optimizando un LLM con Reconocimiento de Voz
+    para Pre-Consulta Médica y Agilización de la Atención al Paciente
+  </h1>
 
-        <section id="hero" class="text-center mb-24">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Asistente Inteligente Soberano para Soporte Técnico</h1>
-            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-4">Un enfoque basado en RAG Federado y Adaptación de Voz Multiestilo para el español</p>
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 max-w-2xl mx-auto">
-                <p class="text-sm text-blue-900"><strong>Propuesta de investigación doctoral</strong> adaptable para múltiples enfoques de tesis en el área de IA conversacional</p>
+  <p class="mt-3 text-base md:text-lg text-slate-600">
+    Maestría en Ingeniería y Ciencia de Datos
+  </p>
+
+  <p class="mt-6 text-lg md:text-xl text-slate-600 max-w-4xl">
+    Pre-consulta conversacional en español con <strong>ASR médico</strong>, <strong>motor semántico</strong> (MedLexSp + SNOMED ES)
+    e <strong>interoperabilidad SMART on FHIR</strong> para entregar un resumen <em>citable</em> al clínico.
+  </p>
+
+  <p class="mt-4 max-w-3xl text-slate-500">
+    Seguridad de doble capa: <strong>RBAC antes del LLM</strong> + <strong>FedRAG</strong> (fusión RRF), con opción de <strong>TEEs</strong>.
+  </p>
+
+  <div class="mt-6 flex flex-wrap justify-center gap-2">
+    <span class="badge">🔐 RBAC pre-LLM</span>
+    <span class="badge">🧠 RAG→FedRAG (RRF)</span>
+    <span class="badge">🩺 ASR: mWER + F1</span>
+    <span class="badge">🏷️ SMART on FHIR scopes</span>
+    <span class="badge">🛡️ TEEs opcional</span>
+  </div>
+
+  <div class="mt-12 animate-bounce">
+    <a href="#problema" aria-label="Bajar a la siguiente sección" class="text-slate-500">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </a>
+  </div>
+</section>
+
+        <!-- PROBLEMA -->
+        <section id="problema" class="py-20">
+            <h2 class="text-3xl font-bold text-center mb-12 text-slate-800">El Problema: Ineficiencias en la Consulta</h2>
+            <p class="max-w-3xl mx-auto text-center mb-12">La ingesta manual roba minutos valiosos al diagnóstico/plan. Estandarizar y <em>citar</em> lo que el paciente cuenta, antes de la cita, eleva calidad y seguridad.</p>
+            
+            <div class="max-w-3xl mx-auto mt-8 bg-white p-5 rounded-lg shadow">
+              <h3 class="font-semibold mb-2">Planteamiento del problema</h3>
+              <p>En la consulta ambulatoria, la <strong>ingesta clínica previa</strong> sigue siendo manual y dispersa,
+                 lo que consume tiempo de alto valor y favorece omisiones. Estudios observacionales muestran que,
+                 por cada hora de atención directa, los clínicos invierten casi <strong>dos horas</strong> en EHR y tareas
+                 administrativas, desplazando el foco clínico y afectando la experiencia de pacientes y profesionales.</p>
+              <p>La propuesta aborda esta brecha con una <strong>pre-consulta estructurada y citable</strong>, en español nativo,
+                 integrada al EHR (SMART on FHIR) y con seguridad de doble capa (RBAC pre-LLM + FedRAG), para transformar la
+                 consulta en un espacio de <em>razonamiento</em> en vez de recolección de datos.</p>
+            </div>
+
+            <div class="chart-container mx-auto mt-12">
+                <canvas id="timeChart"></canvas>
+            </div>
+            <p class="text-center text-sm text-slate-500 mt-4">Distribución del tiempo en una consulta de 15 min (ejemplo). Nuestro objetivo: reducir la “recopilación” previa.</p>
+        </section>
+
+        <!-- SOLUCIÓN -->
+        <section id="solucion" class="py-20 bg-white rounded-2xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-12 text-slate-800">Solución: Pre-Consulta Conversacional, Estructurada y Citable</h2>
+            <p class="max-w-3xl mx-auto text-center mb-12">El paciente responde por voz antes de la cita; guiamos la entrevista, normalizamos lenguaje coloquial y armamos un <strong>resumen FHIR</strong> con fuentes (EHR/guías) y trazabilidad.</p>
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8 text-center">
+                <div class="flex flex-col items-center">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 text-3xl">🗣️</div>
+                    <p class="mt-4 font-semibold">Paciente (voz)</p>
+                </div>
+                <div class="text-4xl text-slate-400">→</div>
+                <div class="flex flex-col items-center">
+                    <div class="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-500 text-3xl">🤖</div>
+                    <p class="mt-4 font-semibold">Gestor de diálogo + Motor semántico</p>
+                    </div>
+                <div class="text-4xl text-slate-400">→</div>
+                <div class="flex flex-col items-center">
+                    <div class="w-24 h-24 bg-teal-100 rounded-full flex items-center justify-center text-teal-500 text-3xl">📋</div>
+                    <p class="mt-4 font-semibold">Resumen FHIR citable</p>
+                </div>
             </div>
         </section>
 
-        <section id="planteamiento" class="mb-24 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Planteamiento del Problema</h2>
-            <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200 max-w-4xl mx-auto">
-                <h3 class="text-xl font-bold mb-4 text-gray-800">La Transformación Digital del Soporte Técnico y la Brecha Lingüístico-Cultural</h3>
-                <p class="text-gray-600 mb-4">
-                    La inteligencia artificial conversacional ha emergido como una fuerza transformadora en el servicio al cliente, redefiniendo las interacciones a escala global. Grandes proveedores como Microsoft, Google y AWS han desplegado asistentes avanzados que aprovechan modelos de lenguaje de gran escala (LLM) para ofrecer conversaciones fluidas.
-                </p>
-                <div class="grid md:grid-cols-2 gap-4 my-6">
-                    <div class="bg-orange-50 p-4 rounded-lg">
-                        <h4 class="font-bold text-orange-800 mb-2">Contexto en América Latina</h4>
-                        <p class="text-sm text-gray-700">Casos de éxito en LATAM demuestran que la IA genera valor medible. Por ejemplo, <strong>en México, un banco reportó >90% de reducción en tiempos de respuesta de crédito con GenAI</strong> (caso reportado en 2025).</p>
+        <!-- OBJETIVOS -->
+        <section id="objetivos" class="py-20">
+  <h2 class="text-3xl font-bold text-center mb-8 text-slate-800">Objetivo General y Específicos</h2>
+
+  <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow">
+    <h3 class="font-semibold mb-2">Objetivo General</h3>
+    <p>Diseñar y validar un sistema de <strong>pre-consulta conversacional en español</strong> que integre
+       <strong>ASR optimizado</strong>, <strong>motor semántico</strong> (MedLexSp + SNOMED ES) y <strong>RAG</strong>
+       con <strong>RBAC pre-LLM</strong> y <strong>SMART on FHIR</strong>, capaz de generar un <strong>resumen FHIR citable</strong>
+       que mejore la eficiencia y la calidad de la consulta.</p>
+
+    <h3 class="font-semibold mt-6 mb-2">Objetivos Específicos</h3>
+    <ul class="list-disc pl-6 space-y-2">
+      <li>Entrenar/afinar el ASR (Whisper+LoRA) para español médico y medir <em>mWER</em> y <em>F1</em> de entidades.</li>
+      <li>Construir el motor semántico (MedLexSp + SNOMED ES) con validación clínica de coloquialismos.</li>
+      <li>Implementar <strong>RAG local</strong> con <strong>RBAC</strong> basado en <code>patient/*.read</code> y <code>user/*.read</code> (SMART on FHIR), garantizando trazabilidad de fuentes.</li>
+      <li>Evaluar la calidad de la nota con <strong>PDQI-9</strong>, fidelidad a fuentes y precisión/exhaustividad contextual del RAG.</li>
+      <li>Plan de escalado a <strong>FedRAG</strong> con fusión <em>RRF</em> y exploración de <strong>TEEs</strong> para proteger datos en uso.</li>
+    </ul>
                     </div>
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <h4 class="font-bold text-blue-800 mb-2">El Problema Central</h4>
-                        <p class="text-sm text-gray-700">Los modelos de IA genéricos fallan en comprender la pragmática y cultura del español, creando una ilusión de competencia lingüística que se desmorona en el uso cotidiano.</p>
-                    </div>
+</section>
+        
+        <!-- DIFERENCIACIÓN -->
+        <section id="diferenciacion" class="py-20">
+            <h2 class="text-3xl font-bold text-center mb-12 text-slate-800">Diferenciación en el Mercado</h2>
+            <p class="max-w-3xl mx-auto text-center mb-12">No competimos con triaje ni con scribing en consulta; <strong>preparamos</strong> la consulta con evidencia y permisos correctos.</p>
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto text-center">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="font-bold text-lg text-slate-800">No es un Ambient Scribe</h3>
+                    <p class="mt-2 text-sm text-slate-600">Abridge/DAX ya soportan español, pero documentan <strong>durante</strong> la consulta. Aquí hacemos <strong>antes</strong> la ingesta estructurada y citable para el clínico.</p>
                 </div>
-                <div class="bg-gray-50 p-6 rounded-lg mt-6">
-                    <h4 class="font-bold text-gray-800 mb-3">Datos Clave del Problema</h4>
-                    <ul class="space-y-3 text-gray-700">
-                        <li class="flex items-start">
-                            <span class="text-orange-500 mr-3 mt-1">▸</span>
-                            <span><strong>≈38%</strong> de las organizaciones mencionan <strong>privacidad (38%)</strong> y <strong>seguridad (38%)</strong> como obstáculos principales para GenAI.<br><em class="text-xs text-gray-500">(S&P Global Market Intelligence, 2025)</em></span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-orange-500 mr-3 mt-1">▸</span>
-                            <span><strong>72%</strong> de los <strong>CISOs</strong> temen brechas de seguridad por GenAI; <strong>~70%</strong> de las organizaciones consideran el ecosistema acelerado de IA como su <strong>principal riesgo</strong>.<br><em class="text-xs text-gray-500">(Metomic, 2024; Thales Data Threat Report, 2025)</em></span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-orange-500 mr-3 mt-1">▸</span>
-                            <span><strong>32% global / 49% LATAM</strong> abandonarían una marca tras <strong>una sola</strong> mala experiencia; estudios recientes mantienen la alerta (≈25%).<br><em class="text-xs text-gray-500">(PwC, 2018; Emplifi, 2025)</em></span>
-                        </li>
-                    </ul>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="font-bold text-lg text-slate-800">No es un Symptom Checker</h3>
+                    <p class="mt-2 text-sm text-slate-600">Ada/Mediktor orientan el siguiente paso; nosotros <strong>no diagnosticamos</strong>: recopilamos y normalizamos para el flujo del médico.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="font-bold text-lg text-slate-800">Novedad Coherente</h3>
+                    <p class="mt-2 text-sm text-slate-600">Pre-consulta estructurada con <strong>RBAC pre-LLM</strong> + <strong>FedRAG</strong> (fusión <em>RRF</em>) y foco en <strong>español nativo</strong>.</p>
                 </div>
             </div>
         </section>
 
-        <section id="desafio" class="mb-24 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">El Desafío: Tres Barreras Críticas</h2>
-            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-16">Las soluciones de IA actuales para soporte técnico enfrentan obstáculos fundamentales que limitan su adopción y eficacia en el mercado hispanohablante, especialmente en sectores regulados como finanzas, salud y administración pública.</p>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                    <div class="text-3xl text-orange-500 mb-4">🗣️</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">Brecha Lingüístico-Cultural</h3>
-                    <p class="text-gray-600 mb-3">Los modelos genéricos no comprenden los regionalismos, la jerga y el contexto emocional del español.</p>
-                    <div class="bg-gray-50 p-3 rounded text-sm text-gray-700">
-                        <strong>Ejemplo:</strong> No distinguen "plata" (dinero) de "plata" (metal) en contexto financiero
+        <!-- ARQUITECTURA -->
+        <section id="arquitectura" class="py-20">
+            <h2 class="text-3xl font-bold text-center mb-4 text-slate-800">Arquitectura: Privacidad y Seguridad por Diseño</h2>
+            <p class="max-w-3xl mx-auto text-center mb-12">RAG local (MVP) que evoluciona a <strong>FedRAG</strong>. El <strong>RBAC</strong> se aplica en el <em>recuperador</em> (antes del LLM) usando <strong>SMART on FHIR</strong> (scopes). Opcionalmente, <strong>TEEs</strong> protegen datos <em>en uso</em>.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <div class="flex flex-col space-y-4 items-center lg:items-end">
+                    <div id="node-hospital" class="architecture-node w-full max-w-sm bg-white p-4 rounded-lg border-2 border-slate-200 text-center">
+                        <p class="font-bold">🏥 Hospital A (FHIR Server)</p>
+                        <p class="text-sm">Base de conocimiento local</p>
                     </div>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                    <div class="text-3xl text-orange-500 mb-4">🔒</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">Soberanía de Datos</h3>
-                    <p class="text-gray-600 mb-3">Las empresas se resisten a enviar datos confidenciales a la nube por riesgos de seguridad y cumplimiento normativo.</p>
-                    <div class="bg-gray-50 p-3 rounded text-sm text-gray-700">
-                        <strong>Impacto:</strong> <strong>GDPR (Cap. V)</strong> y <strong>LFPDPPP (México)</strong> restringen transferencias de datos.
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                    <div class="text-3xl text-orange-500 mb-4">🤖</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">Voz Robótica y Poco Fiable</h3>
-                    <p class="text-gray-600 mb-3">Los sistemas actuales suenan monótonos y fallan al transcribir acentos o ruido de fondo.</p>
-                    <div class="bg-gray-50 p-3 rounded text-sm text-gray-700">
-                        <strong>Resultado:</strong> Experiencia en el "valle inquietante" de la IA
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="proposito" class="mb-24 bg-orange-50 py-20 rounded-lg scroll-mt-20">
-            <div class="container mx-auto px-8">
-                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Propósito y Justificación (¿Para qué?)</h2>
-                <div class="max-w-4xl mx-auto">
-                    <div class="bg-white p-8 rounded-lg shadow-lg mb-8">
-                        <h3 class="text-xl font-bold mb-4 text-orange-600">Propósito del Proyecto</h3>
-                        <p class="text-gray-700 mb-4">
-                            Diseñar y prototipar una nueva clase de asistente de IA para soporte técnico que sea <strong>soberano, seguro y culturalmente resonante</strong> para los usuarios de habla hispana. Este proyecto busca eliminar el compromiso actual entre adoptar sistemas potentes pero inseguros en la nube, o depender de sistemas locales menos capaces y costosos.
-                        </p>
-                        <p class="text-gray-700">
-                            La arquitectura propuesta es simultáneamente avanzada en tecnología y respetuosa de la privacidad de los datos y la identidad cultural.
-                        </p>
-                    </div>
-                    
-                    <div class="bg-white p-8 rounded-lg shadow-lg">
-                        <h3 class="text-xl font-bold mb-4 text-orange-600">Justificación</h3>
-                        <p class="text-gray-700 mb-4">
-                            Esta investigación tiene el potencial de <strong>desbloquear la adopción de IA de alto valor</strong> en industrias y regiones que hasta ahora han sido cautelosas por razones válidas de seguridad y eficacia.
-                        </p>
-                        <div class="grid md:grid-cols-2 gap-4 mt-6">
-                            <div class="bg-green-50 border-l-4 border-green-500 p-4">
-                                <h4 selection="font-bold text-green-800 mb-2">Impacto Técnico</h4>
-                                <p class="text-sm text-gray-700">Modelo viable para el desarrollo de asistentes de IA confiables en sectores regulados de América Latina</p>
-                            </div>
-                            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
-                                <h4 class="font-bold text-blue-800 mb-2">Impacto Social</h4>
-                                <p class="text-sm text-gray-700">Facilitador de confianza digital, permitiendo aprovechar la IA sin sacrificar el control sobre los datos</p>
-                            </div>
-                        </div>
+                    <div id="node-clinica" class="architecture-node w-full max-w-sm bg-white p-4 rounded-lg border-2 border-slate-200 text-center">
+                        <p class="font-bold">🏠 Clínica B (FHIR Server)</p>
+                        <p class="text-sm">Residencia y soberanía de datos</p>
                     </div>
                 </div>
                 
-                <div class="chart-container mt-12">
-                    <canvas id="architectureChart"></canvas>
+                <div class="flex flex-col items-center text-center">
+                    <div id="node-orquestador" class="architecture-node w-full max-w-sm bg-indigo-100 p-6 rounded-lg border-2 border-indigo-200 mb-4">
+                        <p class="font-bold text-indigo-800">Orquestador Central</p>
+                        <p class="text-sm text-indigo-600">Consulta nodos, aplica RBAC, fusiona con RRF</p>
+                    </div>
+                    <div class="text-slate-400 font-mono text-sm my-2">&lt;-- Consultas --&gt;</div>
+                    <div id="node-llm" class="architecture-node w-full max-w-sm bg-teal-100 p-6 rounded-lg border-2 border-teal-200 mt-4">
+                        <p class="font-bold text-teal-800">LLM Optimizado</p>
+                        <p class="text-sm text-teal-600">Recibe solo contexto autorizado</p>
+                    </div>
                 </div>
+
+                <div class="flex flex-col space-y-4 items-center lg:items-start">
+                    <div id="node-investigacion" class="architecture-node w-full max-w-sm bg-white p-4 rounded-lg border-2 border-slate-200 text-center">
+                        <p class="font-bold">🔬 Guías Clínicas</p>
+                        <p class="text-sm">Repositorio público</p>
+                        </div>
+                    <div id="node-gobierno" class="architecture-node w-full max-w-sm bg-white p-4 rounded-lg border-2 border-slate-200 text-center">
+                        <p class="font-bold">🏛️ App SMART on FHIR</p>
+                        <p class="text-sm">Cliente (Paciente/Médico)</p>
+                    </div>
+                </div>
+            </div>
+            <div id="architecture-info" class="mt-12 bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto text-center min-h-[120px]">
+                <p class="text-slate-500">Haz clic en un componente de la arquitectura para ver su descripción.</p>
+            </div>
+
+            <div class="mt-8 max-w-3xl mx-auto callout p-4 rounded-md">
+                <p class="text-sm text-slate-700"><strong>Nota:</strong> RRF (Reciprocal Rank Fusion) combina listas por <em>Σ 1/(k + rango)</em>, robusto a escalas heterogéneas entre nodos. TEEs (p. ej., Azure CVMs con AMD SEV-SNP / Intel TDX) protegen datos en memoria durante la agregación/inferencia.</p>
             </div>
         </section>
 
-        <section id="objetivos" class="mb-24 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Objetivos del Proyecto</h2>
-            
-            <div class="max-w-4xl mx-auto mb-12">
-                <div class="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-8 rounded-lg shadow-xl">
-                    <h3 class="text-2xl font-bold mb-4">Objetivo General</h3>
-                    <p class="text-lg">
-                        Diseñar, desarrollar y evaluar un prototipo de asistente de IA soberano para soporte técnico en español que integre una arquitectura de recuperación de conocimiento federada y con preservación de la privacidad, junto con capacidades de interacción por voz altamente adaptadas a un dialecto específico.
-                    </p>
-                </div>
-            </div>
-
+        <!-- COMPONENTES -->
+        <section id="componentes" class="py-20">
+            <h2 class="text-3xl font-bold text-center mb-12 text-slate-800">Componentes de Optimización</h2>
             <div class="max-w-4xl mx-auto">
-                <h3 class="text-2xl font-bold mb-8 text-gray-800">Objetivos Específicos</h3>
-                <div class="space-y-6">
-                    <div class="objective-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-orange-500">
-                        <div class="flex items-start">
-                            <div class="bg-orange-500 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0 font-bold text-lg">1</div>
-                            <div class="ml-4 flex-1">
-                                <h4 class="font-bold text-gray-800 mb-2">Arquitectar un Sistema RAG Seguro y Federado</h4>
-                                <p class="text-gray-600 text-sm">
-                                    Definir una arquitectura de Generación Aumentada por Recuperación (RAG) que opere sobre fuentes de datos distribuidas sin requerir su centralización. Incluye diseño de mecanismo de consulta con preservación de privacidad y control de acceso dinámico ("security trimming").
-                                </p>
+                <div class="flex border-b border-slate-300">
+                    <button data-tab="asr" class="tab-button flex-1 py-3 px-4 text-center font-medium bg-white border-b-2 border-blue-500">ASR de Alta Fidelidad</button>
+                    <button data-tab="contexto" class="tab-button flex-1 py-3 px-4 text-center font-medium text-slate-500 bg-slate-50">Contexto Lingüístico</button>
+                    <button data-tab="acceso" class="tab-button flex-1 py-3 px-4 text-center font-medium text-slate-500 bg-slate-50">Seguridad y Evaluación</button>
+                            </div>
+                <div class="bg-white p-8 rounded-b-lg shadow">
+                    <!-- ASR -->
+                    <div id="asr" class="tab-content">
+                        <h3 class="font-bold text-lg mb-2">ASR Enfocado en Entidades Médicas</h3>
+                        <p>Se afina Whisper (LoRA) con datos pseudo-sintéticos y <strong>lexicon biasing</strong> de fármacos/síntomas. Métricas primarias: <strong>medical-WER (mWER)</strong> y <strong>F1 de entidades</strong>. El WER global pasa a segundo plano frente a errores clínicamente críticos.</p>
+                        <div class="mt-4 bg-slate-50 p-4 rounded-lg">
+                            <p class="font-mono text-sm"><span class="font-bold text-green-600">Métrica Primaria:</span> Reconocer “losartán 50 mg”, “cefalea intensa”.</p>
+                            <p class="font-mono text-sm mt-2"><span class="font-bold text-red-600">Métrica Secundaria:</span> Errores en muletillas (“pues”, “este”).</p>
+                        </div>
+                    </div>
+                    <!-- CONTEXTO -->
+                    <div id="contexto" class="tab-content hidden">
+                        <h3 class="font-bold text-lg mb-2">Motor Semántico Anclado a Estándares</h3>
+                        <p>Interpretamos jerga (“dolor de maceta”) con <strong>SNOMED CT (edición ES)</strong> y <strong>MedLexSp</strong>, más validación clínica de regionalismos (MX/LatAm). Genera pares <em>coloquial→código</em> como activo de datos.</p>
+                        <div class="mt-4 flex space-x-4">
+                            <div class="flex-1 bg-blue-50 p-4 rounded-lg text-center">
+                                <p class="font-semibold text-blue-800">Expresión Coloquial</p>
+                                <p class="mt-2 text-2xl">“Anginas”</p>
+                            </div>
+                            <div class="flex-1 bg-teal-50 p-4 rounded-lg text-center">
+                                <p class="font-semibold text-teal-800">Mapeo a SNOMED CT</p>
+                                <p class="mt-2 text-2xl">Faringoamigdalitis</p>
                             </div>
                         </div>
                     </div>
-
-                    <div class="objective-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-blue-500">
-                        <div class="flex items-start">
-                            <div class="bg-blue-500 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0 font-bold text-lg">2</div>
-                            <div class="ml-4 flex-1">
-                                <h4 class="font-bold text-gray-800 mb-2">Desarrollar un Módulo ASR de Alta Fidelidad</h4>
-                                <p class="text-gray-600 text-sm">
-                                    Adaptar un modelo de Reconocimiento Automático de Voz pre-entrenado (Whisper, SeamlessM4T) para español de México mediante técnicas PEFT, minimizando la Tasa de Error de Palabra (WER) y Carácter (CER).
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="objective-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-purple-500">
-                        <div class="flex items-start">
-                            <div class="bg-purple-500 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0 font-bold text-lg">3</div>
-                            <div class="ml-4 flex-1">
-                                <h4 class="font-bold text-gray-800 mb-2">Implementar un Módulo TTS Expresivo y Emocional</h4>
-                                <p class="text-gray-600 text-sm">
-                                    Desarrollar un motor de Síntesis de Voz capaz de generar respuestas con prosodia y emoción contextualmente apropiadas usando modelos como <strong>Sesame 1B con Fine-Tuning</strong> y técnicas de control de estilo.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="objective-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-green-500">
-                        <div class="flex items-start">
-                            <div class="bg-green-500 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0 font-bold text-lg">4</div>
-                            <div class="ml-4 flex-1">
-                                <h4 class="font-bold text-gray-800 mb-2">Integrar los Componentes en un Pipeline Conversacional</h4>
-                                <p class="text-gray-600 text-sm">
-                                    Ensamblar los módulos de RAG Federado, ASR y TTS en un pipeline funcional de extremo a extremo que procese consultas de voz, recupere información segura y genere respuestas coherentes y naturales.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="objective-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-red-500">
-                        <div class="flex items-start">
-                            <div class="bg-red-500 text-white rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0 font-bold text-lg">5</div>
-                            <div class="ml-4 flex-1">
-                                <h4 class="font-bold text-gray-800 mb-2">Evaluar Rigurosamente el Prototipo</h4>
-                                <p class="text-gray-600 text-sm">
-                                    Realizar evaluación exhaustiva con protocolo mixto: métricas objetivas (WER/CER, F0-RMSE), subjetivas (MOS) y evaluación de tarea para medir la efectividad del sistema completo.
-                                </p>
-                            </div>
+                    <!-- ACCESO -->
+                    <div id="acceso" class="tab-content hidden">
+                        <h3 class="font-bold text-lg mb-2">Control de Acceso y Evaluación</h3>
+                        <p><strong>RBAC en recuperación</strong> (no en el prompt): filtramos por rol usando <strong>SMART on FHIR</strong> (OAuth 2.0 scopes) antes de construir el contexto. Seguridad/veracidad con <strong>SafetyBench</strong> y <strong>TruthfulQA</strong>; calidad de la nota con <strong>PDQI-9</strong> + chequeo de fidelidad a fuentes.</p>
+                        <div class="mt-4 bg-slate-50 p-4 rounded-lg">
+                            <p class="font-mono text-sm"><span class="font-bold text-indigo-600">Médico →</span> scopes como <code>user/*.read</code> habilitan antecedentes completos + guías.</p>
+                            <p class="font-mono text-sm mt-2"><span class="font-bold text-blue-600">Paciente →</span> scopes como <code>patient/*.read</code> limitan a su propio EHR + conocimiento general.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="arquitectura" class="mb-24 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Arquitectura y Tecnología Clave</h2>
-            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-16">Nuestra solución se basa en dos pilares tecnológicos innovadores que funcionan en conjunto: un sistema de acceso a datos que respeta la privacidad y un módulo de voz que entiende y habla con naturalidad.</p>
-
-            <div class="grid lg:grid-cols-2 gap-12 items-start">
-                <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-800">1. RAG Federado con Control de Acceso</h3>
-                    <p class="text-gray-600 mb-6">Esta arquitectura permite que la IA consulte bases de conocimiento distribuidas (en diferentes departamentos o países) <strong>sin mover los datos de su lugar de origen</strong>. Un orquestador central gestiona las consultas, garantizando que los datos sensibles nunca salgan de la red local.</p>
-                    <div class="space-y-4 text-sm">
-                        <div class="flex items-start p-3 bg-gray-50 rounded-md transition-all hover:bg-orange-100">
-                            <div class="flex-shrink-0 bg-orange-500 text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold">1</div>
-                            <p><strong class="text-gray-700">Consulta de Usuario:</strong> El usuario realiza una pregunta por voz.</p>
+        <!-- MVP -->
+        <section id="mvp" class="py-20">
+            <h2 class="text-3xl font-bold text-center mb-12 text-slate-800">MVP</h2>
+            <p class="max-w-3xl mx-auto text-center mb-12">Validación en una institución con RAG local + SMART on FHIR. KPIs: mWER &lt;10%, F1 entidades &gt;0.80, PDQI-9 &gt;4.0/5 y &lt;15% edición de nota.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-3xl mb-4">1️⃣</div>
+                    <h3 class="font-bold">Un Sistema de Salud</h3>
+                    <p class="text-sm mt-2">RAG local sobre FHIR + guías internas; preparación para FedRAG.</p>
                         </div>
-                        <div class="flex items-start p-3 bg-gray-50 rounded-md transition-all hover:bg-orange-100">
-                            <div class="flex-shrink-0 bg-orange-500 text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold">2</div>
-                            <p><strong class="text-gray-700">Enrutamiento Seguro:</strong> El orquestador aplica filtros de seguridad basados en la identidad del usuario.</p>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-3xl mb-4">2️⃣</div>
+                    <h3 class="font-bold">Login SMART on FHIR</h3>
+                    <p class="text-sm mt-2">RBAC conectado a scopes <code>patient/*.read</code> y <code>user/*.read</code>.</p>
                         </div>
-                        <div class="flex items-start p-3 bg-gray-50 rounded-md transition-all hover:bg-orange-100">
-                            <div class="flex-shrink-0 bg-orange-500 text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold">3</div>
-                            <p><strong class="text-gray-700">Búsqueda Local:</strong> Cada nodo busca en su base privada y devuelve solo información permitida.</p>
-                        </div>
-                        <div class="flex items-start p-3 bg-gray-50 rounded-md transition-all hover:bg-orange-100">
-                            <div class="flex-shrink-0 bg-orange-500 text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold">4</div>
-                            <p><strong class="text-gray-700">Respuesta Aumentada:</strong> El LLM <strong>(Llama 3.2 LoRA)</strong> genera una respuesta precisa citando las fuentes.</p>
-                        </div>
-                    </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-3xl mb-4">3️⃣</div>
+                    <h3 class="font-bold">ASR Enfocado</h3>
+                    <p class="text-sm mt-2">Whisper + LoRA + <em>lexicon biasing</em>. Métricas: mWER y F1.</p>
                 </div>
-
-                <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-800">2. Módulo de Voz Adaptado y Expresivo</h3>
-                    <p class="text-gray-600 mb-6">Utilizamos técnicas de <em>fine-tuning</em> para adaptar modelos de voz de última generación a un dialecto específico del español, mejorando la precisión del reconocimiento (ASR) y generando respuestas (TTS) con entonación adecuada.</p>
-                    <div class="space-y-4">
-                         <div class="bg-gray-50 p-4 rounded-lg">
-                            <p class="font-bold text-gray-700">Entrada de Voz del Usuario 🎤</p>
-                        </div>
-                        <div class="text-center text-gray-400">↓</div>
-                        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
-                            <h4 class="font-bold text-blue-800">ASR de Alta Fidelidad</h4>
-                            <p class="text-sm text-blue-700">Modelo afinado con PEFT para transcribir con precisión habla coloquial y acentos.</p>
-                        </div>
-                        <div class="text-center text-gray-400">↓</div>
-                        <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-lg">
-                            <h4 class="font-bold text-green-800">LLM + RAG Federado</h4>
-                            <p class="text-sm text-green-700">El modelo <strong>Llama 3.2 LoRA</strong> procesa el texto, recupera información segura y determina el tono emocional.</p>
-                        </div>
-                        <div class="text-center text-gray-400">↓</div>
-                        <div class="bg-purple-50 border-l-4 border-purple-400 p-4 rounded-lg">
-                            <h4 class="font-bold text-purple-800">TTS Expresivo y Emocional</h4>
-                            <p class="text-sm text-purple-700">El modelo <strong>Sesame 1B (con Fine-Tuning)</strong> genera voz con prosodia natural y entonación controlada.</p>
-                        </div>
-                        <div class="text-center text-gray-400">↓</div>
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <p class="font-bold text-gray-700">Respuesta de Voz del Asistente 🔊</p>
-                        </div>
-                    </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-3xl mb-4">4️⃣</div>
+                    <h3 class="font-bold">Motor Semántico</h3>
+                    <p class="text-sm mt-2">MedLexSp + SNOMED ES con validación clínica.</p>
                 </div>
             </div>
 
-            <div class="mt-24">
-                <h3 class="text-2xl font-bold text-center text-gray-800 mb-12">Eficiencia de Cómputo: Viabilidad On-Premise en Hardware Modesto</h3>
-                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-16">La soberanía de datos requiere ejecución local (*on-premise*), pero esto no tiene por qué significar costos prohibitivos. La estrategia se centra en técnicas de optimización para ejecutar modelos potentes en hardware accesible.</p>
-                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                        <h4 class="font-bold text-lg mb-3 text-gray-800">Quantización y Fine-Tuning Eficiente</h4>
-                        <p class="text-gray-600">Técnicas como <strong>QLoRA</strong> permiten afinar modelos grandes en una sola GPU (48 GB) con un rendimiento casi idéntico a formatos más pesados (FP16). Para la inferencia, <strong>GPTQ</strong> y <strong>AWQ</strong> reducen drásticamente el uso de memoria (a 3-4 bits) manteniendo una alta calidad.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                        <h4 class="font-bold text-lg mb-3 text-gray-800">Servicio de Alto Rendimiento</h4>
-                        <p class="text-gray-600">El uso de frameworks como <strong>vLLM</strong> con gestión de memoria avanzada (PagedAttention) puede mejorar el rendimiento (throughput) de <strong>2 a 4 veces</strong> en comparación con librerías estándar, y hasta 24x en ciertos escenarios, sirviendo a más usuarios simultáneos con el mismo hardware.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                        <h4 class="font-bold text-lg mb-3 text-gray-800">Inferencia en CPU y Apple Silicon</h4>
-                        <p class="text-gray-600">Cuando no hay GPUs dedicadas, herramientas como <strong>llama.cpp</strong> permiten ejecutar modelos de 7B parámetros a 4-bits en CPUs de escritorio estándar (~8-10 tokens/s). Frameworks como <strong>MLX</strong> de Apple logran inferencia optimizada en Macs modernos, ideal para prototipos y pilotos.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                        <h4 class="font-bold text-lg mb-3 text-gray-800">Modelos Base Compactos y Eficientes</h4>
-                        <p class="text-gray-600">Partir de modelos de alto rendimiento pero de tamaño reducido como <strong>Llama 3.1 (8B)</strong> es clave. Ofrecen capacidades multilingües robustas (incluido español) sin la huella de memoria de modelos con cientos de miles de millones de parámetros.</p>
-                    </div>
-                </div>
-                 <div class="bg-green-50 border-l-4 border-green-500 p-6 max-w-4xl mx-auto mt-12 rounded-r-lg">
-                    <p class="text-green-900"><strong class="font-bold">Resultado Clave:</strong> Con la combinación de quantización (3-4 bit), vLLM y modelos de ~8B parámetros, es posible servir este asistente en una sola GPU de gama media o incluso en CPUs/Macs (para pilotos), reduciendo drásticamente la memoria, el costo por token y la latencia.</p>
-                </div>
-            </div>
-            
-        </section>
-
-        <section id="evaluacion" class="scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Validación y Métricas de Éxito</h2>
-            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-16">El éxito del proyecto se medirá con un protocolo de evaluación riguroso que combina métricas objetivas y subjetivas para validar cada componente y el sistema en su conjunto. Haz clic en cada métrica para saber más.</p>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="metric-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">WER / CER</h3>
-                    <p class="text-gray-500 font-medium">Módulo: ASR</p>
-                    <div class="metric-details hidden mt-4 text-gray-600">
-                        <p><strong>Definición:</strong> Tasa de Error de Palabra/Carácter. Mide la precisión de la transcripción. El objetivo es minimizar este valor para el dialecto específico.</p>
-                        <p class="mt-2 text-sm"><strong>Fórmula:</strong> WER = (S+D+I)/N donde S=Sustituciones, D=Eliminaciones, I=Inserciones, N=Palabras en referencia</p>
-                    </div>
-                </div>
-                <div class="metric-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">MOS</h3>
-                    <p class="text-gray-500 font-medium">Módulo: TTS</p>
-                    <div class="metric-details hidden mt-4 text-gray-600">
-                        <p><strong>Definición:</strong> Puntuación de Opinión Media. Evaluadores humanos califican la naturalidad, claridad y adecuación emocional de la voz generada en una escala de 1 a 5.</p>
-                    </div>
-                </div>
-                <div class="metric-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">F0-RMSE</h3>
-                    <p class="text-gray-500 font-medium">Módulo: TTS</p>
-                    <div class="metric-details hidden mt-4 text-gray-600">
-                        <p><strong>Definición:</strong> Raíz del Error Cuadrático Medio de F0. Mide objetivamente qué tan cerca está la entonación (melodía) de la voz sintética de una grabación humana de referencia.</p>
-                    </div>
-                </div>
-                <div class="metric-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">Tasa de Denegación de Acceso</h3>
-                    <p class="text-gray-500 font-medium">Módulo: RAG (Seguridad)</p>
-                    <div class="metric-details hidden mt-4 text-gray-600">
-                        <p><strong>Definición:</strong> Porcentaje de intentos de acceso a información no autorizada que son bloqueados correctamente. El objetivo es un 100% para validar la seguridad.</p>
-                    </div>
-                </div>
-                <div class="metric-card bg-white p-6 rounded-lg shadow-lg border border-gray-200 cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1">
-                    <h3 class="text-xl font-bold mb-2 text-gray-800">Tasa de Éxito de Tarea</h3>
-                    <p class="text-gray-500 font-medium">Sistema Completo</p>
-                    <div class="metric-details hidden mt-4 text-gray-600">
-                        <p><strong>Definición:</strong> Porcentaje de problemas de soporte técnico simulados que el asistente resuelve de forma correcta y autónoma, midiendo su utilidad práctica.</p>
-                    </div>
-                </div>
+            <div class="mt-10 max-w-3xl mx-auto bg-amber-50 border border-amber-200 p-4 rounded-lg text-amber-900">
+                <p class="text-sm"><strong>Licenciamiento SNOMED CT (MX):</strong> México no es miembro; uso comercial requiere licencia de no-miembro (~USD 1,303/año para instituciones Banda B). Planificar alta en MLDS y costearlo desde el MVP.</p>
             </div>
         </section>
 
     </main>
 
-    <footer class="bg-gray-800 text-white mt-24">
-        <div class="container mx-auto px-6 py-8 text-center">
-            <p>&copy; 2024 Propuesta de Tesis: Asistente Inteligente Soberano. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+    <footer class="bg-white border-t border-slate-200">
+  <div class="container mx-auto px-6 py-8 text-center text-slate-500">
+    <p>Tesis de Maestría — Maestría en Ingeniería y Ciencia de Datos.</p>
+                    </div>
+</footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const menuBtn = document.getElementById('menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const navLinks = document.querySelectorAll('nav a, #mobile-menu a');
-
-            menuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = e.currentTarget.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                    if (mobileMenu.classList.contains('hidden') === false) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                });
-            });
-
-            const ctx = document.getElementById('architectureChart').getContext('2d');
-            const architectureChart = new Chart(ctx, {
-                type: 'doughnut',
+        document.addEventListener('DOMContentLoaded', () => {
+            // ---- Chart ----
+            const timeCtx = document.getElementById('timeChart').getContext('2d');
+            new Chart(timeCtx, {
+                type: 'bar',
                 data: {
-                    labels: ['Cloud API (Ej. OpenAI)', 'On-Premise (Tradicional)', 'On-Premise Eficiente (Propuesta)'],
+                    labels: ['Recopilación', 'Examen/Diagnóstico', 'Plan/Documentación'],
                     datasets: [{
-                        label: 'Análisis de Arquitectura',
-                        data: [33.3, 33.3, 33.4],
+                        label: 'Minutos por Actividad',
+                        data: [6, 5, 4],
                         backgroundColor: [
-                            '#FBBF24',
-                            '#F87171',
-                            '#34D399'
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(139, 92, 246, 0.7)',
                         ],
-                        borderColor: '#FDFBF8',
-                        borderWidth: 4,
-                        hoverOffset: 10
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(139, 92, 246, 1)',
+                        ],
+                        borderWidth: 1
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '60%',
+                    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
                     plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                color: '#4A4A4A',
-                                font: {
-                                    size: 14
-                                }
-                            }
-                        },
-                        tooltip: {
-                            enabled: true,
-                            backgroundColor: '#4A4A4A',
-                            titleFont: {
-                                size: 16,
-                                weight: 'bold'
-                            },
-                            bodyFont: {
-                                size: 12
-                            },
-                            padding: 12,
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    if (label === 'Cloud API (Ej. OpenAI)') {
-                                        return ['Costo: Bajo inicial, alto a escala', 'Soberanía: Baja', 'Escalabilidad: Muy Alta'];
-                                    }
-                                    if (label === 'On-Premise (Tradicional)') {
-                                        return ['Costo: Muy Alto inicial', 'Soberanía: Total', 'Escalabilidad: Baja'];
-                                    }
-                                    if (label === 'On-Premise Eficiente (Propuesta)') {
-                                        return ['Costo: Medio y controlado', 'Soberanía: Total', 'Escalabilidad: Alta'];
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} min` } }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, title: { display: true, text: 'Tiempo (minutos)' } }
                     }
                 }
             });
 
-            const metricCards = document.querySelectorAll('.metric-card');
-            metricCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const details = card.querySelector('.metric-details');
-                    details.classList.toggle('hidden');
+            // ---- Arquitectura interactiva ----
+            const archNodes = document.querySelectorAll('.architecture-node');
+            const archInfo = document.getElementById('architecture-info');
+            const archDescriptions = {
+                'node-hospital': '<strong>Servidor FHIR de Hospital A:</strong> Historiales estructurados. Los datos no salen; solo se devuelven fragmentos autorizados.',
+                'node-clinica': '<strong>Servidor FHIR de Clínica B:</strong> Mantiene residencia/soberanía. Aplica RBAC local al responder.',
+                'node-orquestador': '<strong>Orquestador Central:</strong> Envía consulta con rol, recibe fragmentos de cada nodo, <em>filtra por permisos</em> y fusiona con <em>RRF</em>. Opcional: ejecuta en TEEs.',
+                'node-llm': '<strong>LLM Optimizado:</strong> Recibe contexto <em>ya filtrado</em>. No ve ni almacena datos no autorizados.',
+                'node-investigacion': '<strong>Guías Clínicas:</strong> Evidencia y protocolos para fundamentar preguntas/resumen.',
+                'node-gobierno': '<strong>App SMART on FHIR:</strong> Gestiona login OAuth2 y scopes; define rol/alcances para la recuperación.'
+            };
+            archNodes.forEach(node => {
+                node.addEventListener('click', () => {
+                    archNodes.forEach(n => n.classList.remove('active'));
+                    node.classList.add('active');
+                    archInfo.innerHTML = `<p class="text-slate-700">${archDescriptions[node.id]}</p>`;
                 });
             });
+
+            // ---- Tabs ----
+            const tabs = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.dataset.tab;
+                    tabs.forEach(t => { t.classList.remove('bg-white','border-blue-500'); t.classList.add('bg-slate-50','text-slate-500'); });
+                    tab.classList.add('bg-white','border-blue-500'); tab.classList.remove('bg-slate-50','text-slate-500');
+                    contents.forEach(c => c.classList.toggle('hidden', c.id !== target));
+                });
+            });
+
+            // ---- Nav activo on scroll ----
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+            sections.forEach(section => observer.observe(section));
         });
     </script>
-
 </body>
 </html>
-```
