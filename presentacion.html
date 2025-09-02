@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Tesis de Maestría — LLM + ASR para Pre-Consulta | Maestría en Ingeniería y Ciencia de Datos</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Tesis de Maestría: LLM + ASR en español para pre-consulta, con RAG/FedRAG, RBAC pre-LLM y SMART on FHIR. Exportable a PDF." />
+
+  <!-- Reveal.js (CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/theme/white.min.css" id="theme">
+  <!-- Tailwind (para utilidades estéticas) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Chart.js (para una slide con gráfica) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+  <style>
+    :root {
+      --bg: #f5f3f0;
+      --txt: #334155;      /* slate-700 */
+      --indigo-200: #c7d2fe;
+      --indigo-800: #3730a3;
+      --card: #ffffff;
+    }
+    body, .reveal, .reveal .slides {
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: var(--txt);
+    }
+    .reveal { background: var(--bg); }
+
+    /* ===== Escala tipográfica más compacta ===== */
+    .reveal { font-size: 18px; line-height: 1.45; }
+    @media (max-width: 1024px) { .reveal { font-size: 16px; } }
+    @media print { .reveal { font-size: 12pt; } }
+
+    .reveal h1 { font-size: 1.6rem; letter-spacing: -0.01em; }
+    .reveal h2 { font-size: 1.35rem; letter-spacing: -0.01em; }
+    .reveal h3 { font-size: 1.15rem; }
+
+    /* Override suave a utilidades Tailwind muy grandes dentro de slides */
+    .reveal .slides .text-5xl { font-size: 2.25rem !important; }
+    .reveal .slides .text-4xl { font-size: 1.9rem !important; }
+    .reveal .slides .text-3xl { font-size: 1.5rem !important; }
+    .reveal .slides .text-2xl { font-size: 1.25rem !important; }
+    .reveal .slides .text-xl  { font-size: 1.1rem !important; }
+    .reveal .slides .text-lg  { font-size: 1rem !important; }
+    .reveal p { margin: .4rem 0 .8rem; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .75rem; border-radius: 9999px; padding: .25rem .6rem;
+      background: #eef2ff; color: var(--indigo-800); border: 1px solid var(--indigo-200);
+    }
+    .callout { background: #fff; border-left: 4px solid #14b8a6; padding: .75rem 1rem; border-radius: .5rem; }
+
+    /* Tarjetas de arquitectura */
+    .arch-card {
+      border: 2px solid #e2e8f0; /* slate-200 */
+      border-radius: .75rem; padding: 1rem; background: var(--card);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      cursor: pointer; text-align: center;
+    }
+    .arch-card:hover, .arch-card.active {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+      border-color: #60a5fa; /* blue-400 */
+    }
+    .arch-desc { display: none; text-align: left; }
+    .arch-desc.active { display: block; }
+
+    /* Gráfica: fijar tamaño para impresión PDF */
+    .chart-wrap { width: 864px; max-width: 90vw; height: 432px; margin: 2rem auto; }
+
+    /* Menos movimiento si el usuario lo solicita */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal .slides section,
+      .reveal .slides [data-fragment-index] { transition: none !important; animation: none !important; }
+    }
+
+    /* Modo impresión PDF de Reveal: mostrar todas las descripciones del diagrama */
+    body.print-pdf .arch-desc { display: block !important; }
+    body.print-pdf .arch-card { cursor: default; }
+    
+    /* Botón de navegación - forzar texto blanco */
+    .nav-button {
+      background-color: #1e293b !important; /* slate-800 */
+      color: #ffffff !important;
+      text-decoration: none !important;
+    }
+    .nav-button:hover {
+      background-color: #334155 !important; /* slate-700 */
+      color: #ffffff !important;
+    }
+  </style>
+</head>
+
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- Portada -->
+    <section data-background-color="#f5f3f0">
+      <h1 class="text-2xl">Tesis de Maestría</h1>
+      <h2 class="text-xl">Optimizando un LLM con Reconocimiento de Voz<br>para Pre-Consulta Médica y Agilización de la Atención</h2>
+      <p class="mt-2 text-base text-slate-600">Maestría en Ingeniería y Ciencia de Datos</p>
+      <div class="mt-3 flex items-center justify-center gap-2">
+        <span class="badge">🔐 RBAC pre-LLM</span>
+        <span class="badge">🧠 RAG → FedRAG (RRF)</span>
+        <span class="badge">🩺 ASR: mWER + F1</span>
+        <span class="badge">🏷️ SMART on FHIR</span>
+        <span class="badge">🛡️ TEEs</span>
+      </div>
+    </section>
+
+    <!-- Problema (resumen) -->
+    <section>
+      <h2>El problema</h2>
+      <p>La ingesta previa es manual y dispersa; consume tiempo de alto valor y favorece omisiones.<br>
+         Estandarizar y <em>citar</em> lo que el paciente cuenta, antes de la cita, eleva calidad y seguridad.</p>
+      <div class="chart-wrap">
+        <canvas id="timeChart" aria-label="Tiempo en consulta (min): Recopilación 6, Examen/Diagnóstico 5, Plan/Documentación 4" role="img">
+          Distribución del tiempo (min): Recopilación 6; Examen/Diagnóstico 5; Plan/Documentación 4.
+        </canvas>
+      </div>
+      <p class="text-sm text-slate-500 mt-2">Objetivo: reducir "recopilación" antes de la visita.</p>
+    </section>
+
+    <!-- Planteamiento del problema (ampliado) -->
+    <section>
+      <h2>Planteamiento del problema</h2>
+      <p>En ambulatorio, la <strong>ingesta clínica previa</strong> sigue siendo manual. Observacionales sugieren
+         que por cada hora de atención directa, los clínicos invierten ~<strong>2 h</strong> en EHR y tareas
+         administrativas, desplazando el foco clínico.</p>
+      <div class="callout mt-3">
+        <p class="text-sm">
+          Propuesta: <strong>pre-consulta estructurada y citable</strong> (español nativo) integrada al EHR (SMART on FHIR)
+          con seguridad de doble capa (RBAC pre-LLM + FedRAG) para transformar la consulta en un espacio de <em>razonamiento</em>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Solución -->
+    <section>
+      <h2>Solución</h2>
+      <p class="mb-4">Paciente responde por voz; guiamos la entrevista, normalizamos jerga y generamos un <strong>resumen FHIR citable</strong> (con trazabilidad a fuentes EHR/guías).</p>
+      <div class="grid grid-cols-3 gap-6 items-start">
+        <div class="text-center">
+          <div class="text-4xl">🗣️</div>
+          <p class="mt-2 font-semibold">Paciente (voz)</p>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl">🤖</div>
+          <p class="mt-2 font-semibold">Gestor diálogo + motor semántico</p>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl">📋</div>
+          <p class="mt-2 font-semibold">Resumen FHIR citable</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Objetivo general + Específicos (1/2) -->
+    <section>
+      <h2>Objetivo general</h2>
+      <p>Diseñar y validar un sistema de <strong>pre-consulta conversacional en español</strong> que integre
+         <strong>ASR</strong> optimizado, <strong>motor semántico</strong> (MedLexSp + SNOMED ES) y <strong>RAG</strong>
+         con <strong>RBAC pre-LLM</strong> y <strong>SMART on FHIR</strong>, capaz de generar un
+         <strong>resumen FHIR citable</strong> que mejore eficiencia y calidad de la consulta.</p>
+
+      <h3 class="mt-4">Objetivos específicos (1/2)</h3>
+      <ul>
+        <li class="fragment">Afinar ASR (Whisper+LoRA) y medir <em>mWER</em> y <em>F1</em> de entidades.</li>
+        <li class="fragment">Construir el motor semántico (MedLexSp + SNOMED ES) con validación clínica de coloquialismos.</li>
+        <li class="fragment">Implementar <strong>RAG local</strong> con <strong>RBAC</strong> por scopes (<code>patient/*.read</code> / <code>user/*.read</code>) y trazabilidad de fuentes.</li>
+      </ul>
+    </section>
+
+    <!-- Objetivos específicos (2/2) -->
+    <section>
+      <h2>Objetivos específicos (2/2)</h2>
+      <ul>
+        <li class="fragment">Evaluar la nota con <strong>PDQI-9</strong>, fidelidad a fuentes y precisión/exhaustividad contextual del RAG.</li>
+        <li class="fragment">Plan de escalado a <strong>FedRAG</strong> con fusión <em>RRF</em> y exploración de <strong>TEEs</strong> para proteger datos en uso.</li>
+      </ul>
+    </section>
+
+    <!-- Diferenciación -->
+    <section>
+      <h2>Diferenciación</h2>
+      <div class="grid grid-cols-3 gap-6">
+        <div class="arch-card">
+          <h3 class="text-base font-bold">No es Ambient Scribe</h3>
+          <p class="text-sm mt-2">Abridge/DAX documentan <strong>durante</strong> la consulta; aquí la ingesta es <strong>antes</strong> y es citable.</p>
+        </div>
+        <div class="arch-card">
+          <h3 class="text-base font-bold">No es Symptom Checker</h3>
+          <p class="text-sm mt-2">Ada/Mediktor orientan el "siguiente paso"; aquí no diagnosticamos, <strong>estructuramos</strong> para el clínico.</p>
+        </div>
+        <div class="arch-card">
+          <h3 class="text-base font-bold">Novedad coherente</h3>
+          <p class="text-sm mt-2">Pre-consulta con <strong>RBAC pre-LLM</strong> + <strong>FedRAG</strong> (RRF) y foco en <strong>español nativo</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Arquitectura (interactiva simplificada) -->
+    <section>
+      <h2>Arquitectura (simplificada)</h2>
+      <p class="text-sm mb-3">Haz clic para ver cada componente. En PDF se muestran todas las descripciones.</p>
+
+      <div class="grid grid-cols-3 gap-4">
+        <div class="arch-card" data-id="hosp">🏥 Hospital A (FHIR)</div>
+        <div class="arch-card" data-id="clin">🏠 Clínica B (FHIR)</div>
+        <div class="arch-card" data-id="orc">🧭 Orquestador</div>
+        <div class="arch-card" data-id="llm">🧠 LLM optimizado</div>
+        <div class="arch-card" data-id="guias">🔬 Guías clínicas</div>
+        <div class="arch-card" data-id="app">🏛️ App SMART on FHIR</div>
+      </div>
+
+      <!-- Panel dinámico -->
+      <div id="arch-info" class="arch-desc mt-4 bg-white p-4 rounded shadow"></div>
+
+      <!-- Versión estática para impresión -->
+      <div class="mt-4 space-y-2" id="arch-static">
+        <div class="arch-desc">
+          <strong>🏥 Hospital A (FHIR):</strong> Historiales estructurados locales. Solo regresan fragmentos autorizados.
+        </div>
+        <div class="arch-desc">
+          <strong>🏠 Clínica B (FHIR):</strong> Residencia/soberanía de datos; aplica RBAC local al responder.
+        </div>
+        <div class="arch-desc">
+          <strong>🧭 Orquestador:</strong> Envía consulta con rol, recibe fragmentos, filtra permisos y fusiona con <em>RRF</em>. Opcional: TEEs.
+        </div>
+        <div class="arch-desc">
+          <strong>🧠 LLM:</strong> Recibe solo contexto autorizado (no almacena datos sensibles).
+        </div>
+        <div class="arch-desc">
+          <strong>🔬 Guías:</strong> Evidencia/protocolos para fundamentar preguntas y resumen.
+        </div>
+        <div class="arch-desc">
+          <strong>🏛️ App SMART on FHIR:</strong> Login OAuth2 y scopes; define rol/alcances para recuperación.
+        </div>
+      </div>
+
+      <aside class="notes">
+        RBAC en recuperador (no en prompt); FedRAG con fusión RRF; TEEs para datos en uso.
+      </aside>
+    </section>
+
+    <!-- Componentes -->
+    <section>
+      <h2>Componentes</h2>
+      <ul>
+        <li class="fragment"><strong>ASR</strong> (Whisper+LoRA) con <em>lexicon biasing</em> → métricas <strong>mWER</strong> y <strong>F1 entidades</strong>.</li>
+        <li class="fragment"><strong>Motor semántico</strong> (MedLexSp + SNOMED ES) + validación clínica de jerga.</li>
+        <li class="fragment"><strong>RAG</strong> con <strong>RBAC</strong> por scopes (SMART on FHIR) + trazabilidad.</li>
+        <li class="fragment">Escalado: <strong>FedRAG</strong> (RRF) y opción de <strong>TEEs</strong>.</li>
+      </ul>
+    </section>
+
+    <!-- MVP -->
+    <section>
+      <h2>MVP y KPIs</h2>
+      <div class="grid grid-cols-2 gap-6 text-left">
+        <div class="callout">
+          <h3 class="font-bold">Alcance</h3>
+          <p>Una institución, RAG local + SMART on FHIR; preparado para FedRAG.</p>
+        </div>
+        <div class="callout">
+          <h3 class="font-bold">KPIs</h3>
+          <ul class="mt-2">
+            <li>mWER &lt; 10%</li>
+            <li>F1 entidades &gt; 0.80</li>
+            <li>PDQI-9 &gt; 4.0/5</li>
+            <li>&lt; 15% edición de nota</li>
+          </ul>
+        </div>
+      </div>
+      <p class="text-xs text-slate-500 mt-3">Licenciamiento SNOMED ES (no-miembro) planificado desde el MVP.</p>
+    </section>
+
+    <!-- Cierre -->
+    <section>
+      <h2>Gracias</h2>
+      <p>David Medina Castellanos</p>
+      <p class="text-sm text-slate-500">Tesis de Maestría — Maestría en Ingeniería y Ciencia de Datos</p>
+      <div class="mt-6">
+        <a href="index.html" class="nav-button px-6 py-3 rounded-lg transition-colors duration-200 font-medium text-lg">Regresar a Home</a>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Reveal.js scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/plugin/zoom/zoom.min.js"></script>
+
+<script>
+  // Inicializar Reveal
+  Reveal.initialize({
+    hash: true,
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    plugins: [ RevealNotes, RevealZoom ]
+  });
+
+  // Gráfica (tamaño fijo para impresión)
+  window.addEventListener('DOMContentLoaded', () => {
+    const ctx = document.getElementById('timeChart');
+    if (ctx) {
+      new Chart(ctx.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: ['Recopilación', 'Examen/Diagnóstico', 'Plan/Documentación'],
+          datasets: [{
+            label: 'Minutos por actividad',
+            data: [6, 5, 4],
+            backgroundColor: [
+              'rgba(59, 130, 246, 0.7)',
+              'rgba(16, 185, 129, 0.7)',
+              'rgba(139, 92, 246, 0.7)'
+            ],
+            borderColor: [
+              'rgba(59, 130, 246, 1)',
+              'rgba(16, 185, 129, 1)',
+              'rgba(139, 92, 246, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: false,  // importante para PDF: tamaño fijo del canvas
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: { legend: { display: false } },
+          scales: { x: { beginAtZero: true, title: { display: true, text: 'Tiempo (min)' } } }
+        }
+      });
+    }
+  });
+
+  // Diagrama interactivo simplificado
+  const infoMap = {
+    hosp: '<strong>🏥 Hospital A (FHIR):</strong> Historiales locales; solo regresan fragmentos autorizados.',
+    clin: '<strong>🏠 Clínica B (FHIR):</strong> Residencia/soberanía; RBAC local al responder.',
+    orc:  '<strong>🧭 Orquestador:</strong> Envía consulta con rol, filtra permisos y fusiona con <em>RRF</em>. Opcional: TEEs.',
+    llm:  '<strong>🧠 LLM:</strong> Recibe solo contexto autorizado (no almacena datos sensibles).',
+    guias:'<strong>🔬 Guías:</strong> Evidencia/protocolos para fundamentar preguntas y resumen.',
+    app:  '<strong>🏛️ App SMART on FHIR:</strong> OAuth2 + scopes; define rol/alcances para recuperación.'
+  };
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.arch-card[data-id]');
+    if (!card) return;
+    document.querySelectorAll('.arch-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    const panel = document.getElementById('arch-info');
+    if (panel) {
+      panel.classList.add('active');
+      panel.innerHTML = infoMap[card.dataset.id] || '';
+    }
+  });
+
+  // Si estás en modo impresión Reveal (?print-pdf), mostrar siempre todas las descripciones
+  (function ensurePrintDescriptions() {
+    if (document.body.classList.contains('print-pdf')) {
+      document.querySelectorAll('#arch-static .arch-desc').forEach(el => el.classList.add('active'));
+    }
+  })();
+</script>
+</body>
+</html>
